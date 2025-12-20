@@ -207,10 +207,7 @@ export default function BibsGenerator() {
                   value={mode}
                   onValueChange={(val) => val && setThemeMode(val as ThemeMode)}
                 >
-                  <Select.Trigger
-                    className={styles.themeTrigger}
-                    aria-label="テーマを選択"
-                  >
+                  <Select.Trigger className={styles.themeTrigger} aria-label="テーマを選択">
                     <Select.Value>
                       {THEME_OPTIONS.find((opt) => opt.value === mode)?.icon}
                     </Select.Value>

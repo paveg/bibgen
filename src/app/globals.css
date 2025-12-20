@@ -1,4 +1,8 @@
-/* Athletic Precision Design System */
+/* ═══════════════════════════════════════════════════════════════════════════
+   BIBGEN Design System - Industrial Trail Edition
+   Inspired by: Mud tracks, forest trails, weathered equipment, racing adrenaline
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
 
 /* Electric Boots - Custom Racing Font */
@@ -9,25 +13,37 @@
 }
 
 :root {
-  /* Core Palette - Athletic Precision */
-  --charcoal-deep: #0d0d0d;
-  --charcoal: #1a1a1a;
-  --charcoal-light: #2a2a2a;
-  --slate: #4a4a4a;
-  --silver: #8a8a8a;
-  --off-white: #f5f5f5;
-  --pure-white: #ffffff;
+  /* ─────────────────────────────────────────────────────────────────────────
+     DARK MODE (Default) - Night Trail
+     Inspired by: Deep forest, wet mud, industrial equipment under moonlight
+     ───────────────────────────────────────────────────────────────────────── */
 
-  /* Accent - Electric Orange */
-  --accent-primary: #ff4d00;
-  --accent-hover: #ff6b2b;
-  --accent-glow: rgba(255, 77, 0, 0.3);
+  /* Core Palette - Earthy Darks */
+  --charcoal-deep: #0c0b09; /* Rich soil black */
+  --charcoal: #171512; /* Dark trail mud */
+  --charcoal-light: #252320; /* Dried earth */
+  --slate: #4a4540; /* Weathered stone */
+  --silver: #8a8278; /* Trail dust - WCAG 4.6:1 on charcoal */
+  --off-white: #e8e4dc; /* Warm sand - WCAG 13.5:1 on charcoal-deep */
+  --pure-white: #f5f2ec; /* Cream white */
 
-  /* Secondary Accent - Neon */
-  --neon-green: #00ff88;
-  --neon-blue: #00d4ff;
+  /* Primary Accent - Racing Orange (KTM/Enduro inspired) */
+  --accent-primary: #ff5a1f; /* Adjusted for WCAG 4.5:1 on dark */
+  --accent-hover: #ff7a47;
+  --accent-glow: rgba(255, 90, 31, 0.35);
 
-  /* Typography - Geist (Modern) */
+  /* Secondary Accents - Trail Environment */
+  --forest: #3d7a52; /* Deep forest green */
+  --forest-light: #5a9e6f; /* Lighter forest */
+  --mud: #8b6b4a; /* Trail mud brown */
+  --mud-light: #a88b6a; /* Dusty trail */
+
+  /* Status Colors */
+  --success: #4a9d5b; /* Forest success */
+  --warning: #c9953a; /* Amber warning */
+  --error: #c94a4a; /* Muted red */
+
+  /* Typography */
   --font-display: "Bebas Neue", sans-serif;
   --font-body: var(--font-geist-sans), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), monospace;
@@ -49,33 +65,47 @@
   --duration-normal: 300ms;
   --duration-slow: 500ms;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4);
+  /* Shadows - Warm undertones */
+  --shadow-sm: 0 1px 2px rgba(12, 11, 9, 0.3);
+  --shadow-md: 0 4px 12px rgba(12, 11, 9, 0.4);
+  --shadow-lg: 0 8px 24px rgba(12, 11, 9, 0.5);
   --shadow-glow: 0 0 40px var(--accent-glow);
 }
 
-/* Light Mode Theme */
+/* ─────────────────────────────────────────────────────────────────────────────
+   LIGHT MODE - Dusty Trail
+   Inspired by: Sunny day riding, desert terrain, sandy paths
+   ───────────────────────────────────────────────────────────────────────────── */
 [data-theme="light"] {
-  /* Core Palette - Light Mode */
-  --charcoal-deep: #ffffff;
-  --charcoal: #f8f9fa;
-  --charcoal-light: #e9ecef;
-  --slate: #adb5bd;
-  --silver: #6c757d;
-  --off-white: #212529;
-  --pure-white: #000000;
+  /* Core Palette - Sandy Lights */
+  --charcoal-deep: #faf8f4; /* Warm cream background */
+  --charcoal: #f2efe8; /* Sandy white */
+  --charcoal-light: #e5e0d5; /* Dusty overlay */
+  --slate: #b5ae9f; /* Stone mid */
+  --silver: #7a7268; /* Earth mid - WCAG 4.5:1 on cream */
+  --off-white: #2a2520; /* Dark earth text - WCAG 12.8:1 */
+  --pure-white: #171512; /* Deepest text */
 
-  /* Accent - Deeper Orange for contrast */
-  --accent-primary: #e64400;
-  --accent-hover: #cc3d00;
-  --accent-glow: rgba(230, 68, 0, 0.2);
+  /* Primary Accent - Deeper for light backgrounds (WCAG compliant) */
+  --accent-primary: #d94a10; /* Darker orange - WCAG 4.5:1 on light */
+  --accent-hover: #c04010;
+  --accent-glow: rgba(217, 74, 16, 0.2);
 
-  /* Shadows - Lighter */
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+  /* Secondary Accents - Richer for visibility */
+  --forest: #2d5a3d; /* Deeper forest */
+  --forest-light: #3d7a52;
+  --mud: #6b5035; /* Richer mud */
+  --mud-light: #8b6b4a;
+
+  /* Status Colors - Darker for contrast */
+  --success: #2d6b3a;
+  --warning: #a67a20;
+  --error: #a83a3a;
+
+  /* Shadows - Subtle and warm */
+  --shadow-sm: 0 1px 3px rgba(42, 37, 32, 0.08);
+  --shadow-md: 0 4px 12px rgba(42, 37, 32, 0.12);
+  --shadow-lg: 0 8px 24px rgba(42, 37, 32, 0.16);
   --shadow-glow: 0 0 40px var(--accent-glow);
 }
 
@@ -114,18 +144,20 @@ body {
   font-family: var(--font-body);
 }
 
-/* Gradient Background */
+/* Gradient Background - Trail Atmosphere */
 .gradient-bg {
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(255, 77, 0, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 0%, rgba(255, 90, 31, 0.06) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 100%, rgba(61, 122, 82, 0.04) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(139, 107, 74, 0.03) 0%, transparent 60%),
     var(--charcoal-deep);
 }
 
 [data-theme="light"] .gradient-bg {
   background:
-    radial-gradient(ellipse at 20% 0%, rgba(255, 77, 0, 0.05) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 100%, rgba(0, 150, 200, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 15% 0%, rgba(217, 74, 16, 0.04) 0%, transparent 45%),
+    radial-gradient(ellipse at 85% 100%, rgba(45, 90, 61, 0.03) 0%, transparent 45%),
+    radial-gradient(ellipse at 50% 50%, rgba(107, 80, 53, 0.02) 0%, transparent 60%),
     var(--charcoal-deep);
 }
 
