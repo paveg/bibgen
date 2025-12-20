@@ -37,21 +37,22 @@
   right: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--charcoal-light);
-  border: 1px solid var(--slate);
-  border-radius: 10px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  color: var(--silver);
   transition: all var(--duration-fast) ease;
 }
 
 .themeToggle:hover {
-  background: var(--slate);
-  border-color: var(--accent-primary);
+  background: var(--charcoal-light);
+  color: var(--off-white);
   transform: translateY(-50%) scale(1.05);
 }
 
@@ -60,7 +61,7 @@
 }
 
 .themeIcon {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   line-height: 1;
 }
 
@@ -877,16 +878,17 @@
   justify-content: center;
   width: 36px;
   height: 36px;
-  color: var(--silver);
-  background: var(--charcoal-light);
+  color: var(--off-white);
+  background: transparent;
   border-radius: 8px;
+  opacity: 0.7;
   transition: all var(--duration-fast) ease;
 }
 
 .githubLink:hover {
-  color: var(--off-white);
-  background: var(--slate);
-  transform: scale(1.05);
+  opacity: 1;
+  background: var(--charcoal-light);
+  transform: scale(1.1);
 }
 
 .githubLink:active {
