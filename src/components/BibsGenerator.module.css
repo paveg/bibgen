@@ -43,6 +43,59 @@
   letter-spacing: 0.1em;
 }
 
+/* User Mode Toggle */
+.userModeToggle {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  margin-top: var(--space-lg);
+}
+
+.userModeButton {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--charcoal);
+  border: 2px solid var(--charcoal-light);
+  border-radius: 12px;
+  color: var(--silver);
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+  min-width: 160px;
+}
+
+.userModeButton:hover {
+  background: var(--charcoal-light);
+  border-color: var(--slate);
+}
+
+.userModeActive {
+  background: rgba(255, 77, 0, 0.1);
+  border-color: var(--accent-primary);
+  color: var(--off-white);
+}
+
+.userModeIcon {
+  font-size: 1.8rem;
+}
+
+.userModeLabel {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+
+.userModeDesc {
+  font-size: 0.7rem;
+  color: var(--slate);
+}
+
+.userModeActive .userModeDesc {
+  color: var(--silver);
+}
+
 /* Main Grid */
 .mainGrid {
   display: grid;
@@ -333,6 +386,67 @@
 
 .freeInputTextarea::placeholder {
   color: var(--slate);
+}
+
+/* Participant Number Input */
+.participantInput {
+  text-align: center;
+}
+
+.participantNumberInput {
+  display: flex;
+  justify-content: center;
+  margin: var(--space-md) 0;
+}
+
+.participantNumberGroup {
+  display: flex;
+  align-items: center;
+  background: var(--charcoal-light);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid var(--accent-primary);
+  box-shadow: 0 0 20px rgba(255, 77, 0, 0.2);
+}
+
+.participantNumberField {
+  width: 120px;
+  padding: var(--space-md);
+  background: transparent;
+  border: none;
+  color: var(--off-white);
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  text-align: center;
+  letter-spacing: 0.05em;
+}
+
+.participantNumberField:focus {
+  outline: none;
+}
+
+.participantNumberButton {
+  width: 48px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--charcoal);
+  border: none;
+  color: var(--silver);
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+  font-size: 1.5rem;
+}
+
+.participantNumberButton:hover {
+  background: var(--accent-primary);
+  color: var(--pure-white);
+}
+
+.participantNumberButton:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 /* Select Styling */
