@@ -202,38 +202,22 @@ export default function BibsGenerator() {
               <h1 className={styles.logo}>BIBGEN</h1>
             </div>
             {mounted && (
-              <div className={styles.themeSelector}>
-                <Select.Root
-                  value={mode}
-                  onValueChange={(val) => val && setThemeMode(val as ThemeMode)}
-                >
-                  <Select.Trigger className={styles.themeTrigger} aria-label="テーマを選択">
-                    <Select.Value>
-                      {THEME_OPTIONS.find((opt) => opt.value === mode)?.icon}
-                    </Select.Value>
-                    <Select.Icon className={styles.themeSelectIcon}>▼</Select.Icon>
-                  </Select.Trigger>
-                  <Select.Portal>
-                    <Select.Positioner>
-                      <Select.Popup className={styles.themePopup}>
-                        {THEME_OPTIONS.map((option) => (
-                          <Select.Item
-                            key={option.value}
-                            value={option.value}
-                            className={styles.themeOption}
-                          >
-                            <Select.ItemIndicator className={styles.themeOptionIndicator}>
-                              ✓
-                            </Select.ItemIndicator>
-                            <span className={styles.themeOptionIcon}>{option.icon}</span>
-                            <Select.ItemText>{option.label}</Select.ItemText>
-                          </Select.Item>
-                        ))}
-                      </Select.Popup>
-                    </Select.Positioner>
-                  </Select.Portal>
-                </Select.Root>
-              </div>
+              <button
+                type="button"
+                className={styles.themeToggle}
+                onClick={() => {
+                  const modes: ThemeMode[] = ["system", "light", "dark"];
+                  const currentIndex = modes.indexOf(mode);
+                  const nextIndex = (currentIndex + 1) % modes.length;
+                  setThemeMode(modes[nextIndex]);
+                }}
+                aria-label={`テーマ: ${THEME_OPTIONS.find((opt) => opt.value === mode)?.label}`}
+                title={THEME_OPTIONS.find((opt) => opt.value === mode)?.label}
+              >
+                <span className={styles.themeIcon}>
+                  {THEME_OPTIONS.find((opt) => opt.value === mode)?.icon}
+                </span>
+              </button>
             )}
           </div>
           <p className={styles.tagline}>バイク用ゼッケンナンバージェネレーター</p>
