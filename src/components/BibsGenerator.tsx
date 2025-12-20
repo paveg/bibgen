@@ -3,7 +3,7 @@
 import { NumberField } from "@base-ui-components/react/number-field";
 import { Select } from "@base-ui-components/react/select";
 import { AnimatePresence, motion } from "motion/react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import styles from "./BibsGenerator.module.css";
 
 // Font options for bibs
@@ -44,6 +44,14 @@ const PADDING_OPTIONS = [
   { value: 3, label: "3桁 (001, 002)" },
 ] as const;
 
+// Input mode options
+const INPUT_MODES = [
+  { value: "range", label: "範囲指定", icon: "📊" },
+  { value: "free", label: "自由入力", icon: "✏️" },
+] as const;
+
+type InputMode = (typeof INPUT_MODES)[number]["value"];
+
 interface BibConfig {
   startNumber: number;
   endNumber: number;
@@ -73,8 +81,21 @@ export default function BibsGenerator() {
 
   const [previewNumber, setPreviewNumber] = useState(1);
   const [showPrintView, setShowPrintView] = useState(false);
+  const [inputMode, setInputMode] = useState<InputMode>("range");
+  const [freeInput, setFreeInput] = useState("1, 2, 3, 5, 7, 10");
 
   const bibNumbers = useMemo(() => {
+    if (inputMode === "free") {
+      // Parse free input: support comma, space, newline separated values
+      const parsed = freeInput
+        .split(/[,\s\n]+/)
+        .map((s) => s.trim())
+        .filter((s) => s !== "")
+        .map((s) => parseInt(s, 10))
+        .filter((n) => !Number.isNaN(n) && n >= 0 && n <= 9999);
+      // Remove duplicates and sort
+      return [...new Set(parsed)].sort((a, b) => a - b);
+    }
     const numbers: number[] = [];
     const start = Math.min(config.startNumber, config.endNumber);
     const end = Math.max(config.startNumber, config.endNumber);
@@ -82,7 +103,14 @@ export default function BibsGenerator() {
       numbers.push(i);
     }
     return numbers;
-  }, [config.startNumber, config.endNumber]);
+  }, [inputMode, freeInput, config.startNumber, config.endNumber]);
+
+  // Reset preview number when bib numbers change
+  useEffect(() => {
+    if (bibNumbers.length > 0 && !bibNumbers.includes(previewNumber)) {
+      setPreviewNumber(bibNumbers[0]);
+    }
+  }, [bibNumbers, previewNumber]);
 
   const formatNumber = useCallback(
     (num: number) => {
@@ -224,45 +252,79 @@ export default function BibsGenerator() {
             {/* Number Range */}
             <div className={styles.controlSection}>
               <h2 className={styles.sectionTitle}>番号設定</h2>
-              <div className={styles.controlGroup}>
-                <label className={styles.label}>番号範囲</label>
-                <div className={styles.rangeInputs}>
-                  <NumberField.Root
-                    value={config.startNumber}
-                    onValueChange={(val) => updateConfig("startNumber", val ?? 1)}
-                    min={0}
-                    max={9999}
+
+              {/* Input Mode Toggle */}
+              <div className={styles.inputModeToggle}>
+                {INPUT_MODES.map((mode) => (
+                  <button
+                    type="button"
+                    key={mode.value}
+                    className={`${styles.inputModeButton} ${
+                      inputMode === mode.value ? styles.inputModeActive : ""
+                    }`}
+                    onClick={() => setInputMode(mode.value)}
                   >
-                    <NumberField.Group className={styles.numberFieldGroup}>
-                      <NumberField.Decrement className={styles.numberButton}>
-                        −
-                      </NumberField.Decrement>
-                      <NumberField.Input className={styles.numberInput} />
-                      <NumberField.Increment className={styles.numberButton}>
-                        +
-                      </NumberField.Increment>
-                    </NumberField.Group>
-                  </NumberField.Root>
-                  <span className={styles.rangeSeparator}>〜</span>
-                  <NumberField.Root
-                    value={config.endNumber}
-                    onValueChange={(val) => updateConfig("endNumber", val ?? 10)}
-                    min={0}
-                    max={9999}
-                  >
-                    <NumberField.Group className={styles.numberFieldGroup}>
-                      <NumberField.Decrement className={styles.numberButton}>
-                        −
-                      </NumberField.Decrement>
-                      <NumberField.Input className={styles.numberInput} />
-                      <NumberField.Increment className={styles.numberButton}>
-                        +
-                      </NumberField.Increment>
-                    </NumberField.Group>
-                  </NumberField.Root>
-                </div>
-                <span className={styles.hint}>{bibNumbers.length}枚のゼッケンを生成</span>
+                    <span className={styles.inputModeIcon}>{mode.icon}</span>
+                    {mode.label}
+                  </button>
+                ))}
               </div>
+
+              {inputMode === "range" ? (
+                <div className={styles.controlGroup}>
+                  <label className={styles.label}>番号範囲</label>
+                  <div className={styles.rangeInputs}>
+                    <NumberField.Root
+                      value={config.startNumber}
+                      onValueChange={(val) => updateConfig("startNumber", val ?? 1)}
+                      min={0}
+                      max={9999}
+                    >
+                      <NumberField.Group className={styles.numberFieldGroup}>
+                        <NumberField.Decrement className={styles.numberButton}>
+                          −
+                        </NumberField.Decrement>
+                        <NumberField.Input className={styles.numberInput} />
+                        <NumberField.Increment className={styles.numberButton}>
+                          +
+                        </NumberField.Increment>
+                      </NumberField.Group>
+                    </NumberField.Root>
+                    <span className={styles.rangeSeparator}>〜</span>
+                    <NumberField.Root
+                      value={config.endNumber}
+                      onValueChange={(val) => updateConfig("endNumber", val ?? 10)}
+                      min={0}
+                      max={9999}
+                    >
+                      <NumberField.Group className={styles.numberFieldGroup}>
+                        <NumberField.Decrement className={styles.numberButton}>
+                          −
+                        </NumberField.Decrement>
+                        <NumberField.Input className={styles.numberInput} />
+                        <NumberField.Increment className={styles.numberButton}>
+                          +
+                        </NumberField.Increment>
+                      </NumberField.Group>
+                    </NumberField.Root>
+                  </div>
+                  <span className={styles.hint}>{bibNumbers.length}枚のゼッケンを生成</span>
+                </div>
+              ) : (
+                <div className={styles.controlGroup}>
+                  <label className={styles.label}>番号を入力</label>
+                  <textarea
+                    className={styles.freeInputTextarea}
+                    value={freeInput}
+                    onChange={(e) => setFreeInput(e.target.value)}
+                    placeholder="例: 1, 3, 5, 7, 10&#10;または改行区切り"
+                    rows={4}
+                  />
+                  <span className={styles.hint}>
+                    カンマ・スペース・改行で区切って入力 → {bibNumbers.length}枚
+                  </span>
+                </div>
+              )}
 
               <div className={styles.controlGroup}>
                 <label className={styles.label}>桁揃え</label>
@@ -431,19 +493,30 @@ export default function BibsGenerator() {
               <button
                 type="button"
                 className={styles.navButton}
-                onClick={() => setPreviewNumber((n) => Math.max(config.startNumber, n - 1))}
-                disabled={previewNumber <= config.startNumber}
+                onClick={() => {
+                  const currentIndex = bibNumbers.indexOf(previewNumber);
+                  if (currentIndex > 0) {
+                    setPreviewNumber(bibNumbers[currentIndex - 1]);
+                  }
+                }}
+                disabled={bibNumbers.indexOf(previewNumber) <= 0}
               >
                 ← 前
               </button>
               <span className={styles.previewCounter}>
-                {formatNumber(previewNumber)} / {formatNumber(config.endNumber)}
+                {formatNumber(previewNumber)} ({bibNumbers.indexOf(previewNumber) + 1}/
+                {bibNumbers.length})
               </span>
               <button
                 type="button"
                 className={styles.navButton}
-                onClick={() => setPreviewNumber((n) => Math.min(config.endNumber, n + 1))}
-                disabled={previewNumber >= config.endNumber}
+                onClick={() => {
+                  const currentIndex = bibNumbers.indexOf(previewNumber);
+                  if (currentIndex < bibNumbers.length - 1) {
+                    setPreviewNumber(bibNumbers[currentIndex + 1]);
+                  }
+                }}
+                disabled={bibNumbers.indexOf(previewNumber) >= bibNumbers.length - 1}
               >
                 次 →
               </button>

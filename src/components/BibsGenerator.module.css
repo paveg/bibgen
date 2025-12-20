@@ -271,6 +271,70 @@
   border-color: var(--accent-primary);
 }
 
+/* Input Mode Toggle */
+.inputModeToggle {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.inputModeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  background: var(--charcoal-light);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  color: var(--silver);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+
+.inputModeButton:hover {
+  background: var(--slate);
+  color: var(--off-white);
+}
+
+.inputModeActive {
+  background: rgba(255, 77, 0, 0.15);
+  border-color: var(--accent-primary);
+  color: var(--off-white);
+}
+
+.inputModeIcon {
+  font-size: 1rem;
+}
+
+/* Free Input Textarea */
+.freeInputTextarea {
+  width: 100%;
+  padding: var(--space-sm);
+  background: var(--charcoal-light);
+  border: 1px solid var(--slate);
+  border-radius: 8px;
+  color: var(--off-white);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color var(--duration-fast) ease;
+}
+
+.freeInputTextarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
+
+.freeInputTextarea::placeholder {
+  color: var(--slate);
+}
+
 /* Select Styling */
 .selectTrigger {
   width: 100%;
