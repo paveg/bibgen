@@ -853,6 +853,13 @@
   font-size: 0.8rem;
 }
 
+.footerContent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+}
+
 .footerLink {
   color: var(--accent-primary);
   text-decoration: none;
@@ -862,6 +869,41 @@
 .footerLink:hover {
   color: var(--accent-hover);
   text-decoration: underline;
+}
+
+.githubLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--silver);
+  background: var(--charcoal-light);
+  border-radius: 8px;
+  transition: all var(--duration-fast) ease;
+}
+
+.githubLink:hover {
+  color: var(--off-white);
+  background: var(--slate);
+  transform: scale(1.05);
+}
+
+.githubLink:active {
+  transform: scale(0.95);
+}
+
+/* Screen Reader Only */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Print View */
