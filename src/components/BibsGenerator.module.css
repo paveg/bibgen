@@ -16,12 +16,48 @@
   margin-bottom: var(--space-lg);
 }
 
+.headerTop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xs);
+  position: relative;
+}
+
 .logoContainer {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
-  margin-bottom: var(--space-xs);
+}
+
+.themeToggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--charcoal-light);
+  border: 1px solid var(--slate);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+
+.themeToggle:hover {
+  background: var(--slate);
+  border-color: var(--accent-primary);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.themeIcon {
+  font-size: 1.3rem;
+  line-height: 1;
 }
 
 .logoIcon {

@@ -4,6 +4,7 @@ import { NumberField } from "@base-ui-components/react/number-field";
 import { Select } from "@base-ui-components/react/select";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTheme } from "@/hooks/useTheme";
 import styles from "./BibsGenerator.module.css";
 
 // Font options for bibs
@@ -98,6 +99,7 @@ export default function BibsGenerator() {
   const [freeInput, setFreeInput] = useState("1, 2, 3, 5, 7, 10");
   const [userMode, setUserMode] = useState<UserMode>("participant");
   const [participantNumber, setParticipantNumber] = useState(42);
+  const { theme, toggleTheme, mounted } = useTheme();
 
   const bibNumbers = useMemo(() => {
     // Participant mode: single number
@@ -187,9 +189,21 @@ export default function BibsGenerator() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1] }}
         >
-          <div className={styles.logoContainer}>
-            <span className={styles.logoIcon}>🏁</span>
-            <h1 className={styles.logo}>BIBGEN</h1>
+          <div className={styles.headerTop}>
+            <div className={styles.logoContainer}>
+              <span className={styles.logoIcon}>🏁</span>
+              <h1 className={styles.logo}>BIBGEN</h1>
+            </div>
+            {mounted && (
+              <button
+                type="button"
+                className={styles.themeToggle}
+                onClick={toggleTheme}
+                aria-label={theme === "dark" ? "ライトモードに切り替え" : "ダークモードに切り替え"}
+              >
+                <span className={styles.themeIcon}>{theme === "dark" ? "☀️" : "🌙"}</span>
+              </button>
+            )}
           </div>
           <p className={styles.tagline}>バイク用ゼッケンナンバージェネレーター</p>
 
