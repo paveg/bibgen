@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
-import { motion, AnimatePresence } from "motion/react";
 import { NumberField } from "@base-ui-components/react/number-field";
 import { Select } from "@base-ui-components/react/select";
+import { AnimatePresence, motion } from "motion/react";
+import { useCallback, useMemo, useState } from "react";
 import styles from "./BibsGenerator.module.css";
 
 // Font options for bibs
@@ -92,12 +92,9 @@ export default function BibsGenerator() {
     [config.padding]
   );
 
-  const updateConfig = useCallback(
-    <K extends keyof BibConfig>(key: K, value: BibConfig[K]) => {
-      setConfig((prev) => ({ ...prev, [key]: value }));
-    },
-    []
-  );
+  const updateConfig = useCallback(<K extends keyof BibConfig>(key: K, value: BibConfig[K]) => {
+    setConfig((prev) => ({ ...prev, [key]: value }));
+  }, []);
 
   const handlePrint = useCallback(() => {
     setShowPrintView(true);
@@ -107,35 +104,29 @@ export default function BibsGenerator() {
     }, 100);
   }, []);
 
-  const selectColorPreset = useCallback(
-    (preset: (typeof COLOR_PRESETS)[number]) => {
+  const selectColorPreset = useCallback((preset: (typeof COLOR_PRESETS)[number]) => {
+    setConfig((prev) => ({
+      ...prev,
+      bgColor: preset.bg,
+      textColor: preset.text,
+    }));
+  }, []);
+
+  const selectSizePreset = useCallback((preset: (typeof SIZE_PRESETS)[number]) => {
+    if (preset.name === "カスタム") {
       setConfig((prev) => ({
         ...prev,
-        bgColor: preset.bg,
-        textColor: preset.text,
+        selectedSizePreset: preset.name,
       }));
-    },
-    []
-  );
-
-  const selectSizePreset = useCallback(
-    (preset: (typeof SIZE_PRESETS)[number]) => {
-      if (preset.name === "カスタム") {
-        setConfig((prev) => ({
-          ...prev,
-          selectedSizePreset: preset.name,
-        }));
-      } else {
-        setConfig((prev) => ({
-          ...prev,
-          bibWidth: preset.width,
-          bibHeight: preset.height,
-          selectedSizePreset: preset.name,
-        }));
-      }
-    },
-    []
-  );
+    } else {
+      setConfig((prev) => ({
+        ...prev,
+        bibWidth: preset.width,
+        bibHeight: preset.height,
+        selectedSizePreset: preset.name,
+      }));
+    }
+  }, []);
 
   return (
     <>
@@ -168,11 +159,10 @@ export default function BibsGenerator() {
               <div className={styles.sizePresets}>
                 {SIZE_PRESETS.map((preset) => (
                   <button
+                    type="button"
                     key={preset.name}
                     className={`${styles.sizePreset} ${
-                      config.selectedSizePreset === preset.name
-                        ? styles.sizePresetActive
-                        : ""
+                      config.selectedSizePreset === preset.name ? styles.sizePresetActive : ""
                     }`}
                     onClick={() => selectSizePreset(preset)}
                   >
@@ -193,9 +183,7 @@ export default function BibsGenerator() {
                     <label>幅 (mm)</label>
                     <NumberField.Root
                       value={config.bibWidth}
-                      onValueChange={(val) =>
-                        updateConfig("bibWidth", val ?? 200)
-                      }
+                      onValueChange={(val) => updateConfig("bibWidth", val ?? 200)}
                       min={100}
                       max={500}
                     >
@@ -214,9 +202,7 @@ export default function BibsGenerator() {
                     <label>高さ (mm)</label>
                     <NumberField.Root
                       value={config.bibHeight}
-                      onValueChange={(val) =>
-                        updateConfig("bibHeight", val ?? 150)
-                      }
+                      onValueChange={(val) => updateConfig("bibHeight", val ?? 150)}
                       min={80}
                       max={400}
                     >
@@ -243,9 +229,7 @@ export default function BibsGenerator() {
                 <div className={styles.rangeInputs}>
                   <NumberField.Root
                     value={config.startNumber}
-                    onValueChange={(val) =>
-                      updateConfig("startNumber", val ?? 1)
-                    }
+                    onValueChange={(val) => updateConfig("startNumber", val ?? 1)}
                     min={0}
                     max={9999}
                   >
@@ -262,9 +246,7 @@ export default function BibsGenerator() {
                   <span className={styles.rangeSeparator}>〜</span>
                   <NumberField.Root
                     value={config.endNumber}
-                    onValueChange={(val) =>
-                      updateConfig("endNumber", val ?? 10)
-                    }
+                    onValueChange={(val) => updateConfig("endNumber", val ?? 10)}
                     min={0}
                     max={9999}
                   >
@@ -279,9 +261,7 @@ export default function BibsGenerator() {
                     </NumberField.Group>
                   </NumberField.Root>
                 </div>
-                <span className={styles.hint}>
-                  {bibNumbers.length}枚のゼッケンを生成
-                </span>
+                <span className={styles.hint}>{bibNumbers.length}枚のゼッケンを生成</span>
               </div>
 
               <div className={styles.controlGroup}>
@@ -289,11 +269,10 @@ export default function BibsGenerator() {
                 <div className={styles.paddingOptions}>
                   {PADDING_OPTIONS.map((opt) => (
                     <button
+                      type="button"
                       key={opt.value}
                       className={`${styles.paddingOption} ${
-                        config.padding === opt.value
-                          ? styles.paddingOptionActive
-                          : ""
+                        config.padding === opt.value ? styles.paddingOptionActive : ""
                       }`}
                       onClick={() => updateConfig("padding", opt.value)}
                     >
@@ -326,9 +305,7 @@ export default function BibsGenerator() {
                             value={font.value}
                             className={styles.selectOption}
                           >
-                            <Select.ItemIndicator
-                              className={styles.optionIndicator}
-                            >
+                            <Select.ItemIndicator className={styles.optionIndicator}>
                               ✓
                             </Select.ItemIndicator>
                             <Select.ItemText>{font.label}</Select.ItemText>
@@ -341,17 +318,13 @@ export default function BibsGenerator() {
               </div>
 
               <div className={styles.controlGroup}>
-                <label className={styles.label}>
-                  サイズ: {config.fontSize}px
-                </label>
+                <label className={styles.label}>サイズ: {config.fontSize}px</label>
                 <input
                   type="range"
                   min="40"
                   max="200"
                   value={config.fontSize}
-                  onChange={(e) =>
-                    updateConfig("fontSize", parseInt(e.target.value))
-                  }
+                  onChange={(e) => updateConfig("fontSize", parseInt(e.target.value, 10))}
                   className={styles.slider}
                 />
               </div>
@@ -363,6 +336,7 @@ export default function BibsGenerator() {
               <div className={styles.colorPresets}>
                 {COLOR_PRESETS.map((preset) => (
                   <button
+                    type="button"
                     key={preset.name}
                     className={`${styles.colorPreset} ${
                       config.bgColor === preset.bg ? styles.colorPresetActive : ""
@@ -403,6 +377,7 @@ export default function BibsGenerator() {
 
             {/* Print Button */}
             <motion.button
+              type="button"
               className={styles.printButton}
               onClick={handlePrint}
               whileHover={{ scale: 1.02 }}
@@ -446,9 +421,7 @@ export default function BibsGenerator() {
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.3, ease: [0.19, 1, 0.22, 1] }}
                 >
-                  <span className={styles.bibNumber}>
-                    {formatNumber(previewNumber)}
-                  </span>
+                  <span className={styles.bibNumber}>{formatNumber(previewNumber)}</span>
                 </motion.div>
               </AnimatePresence>
             </div>
@@ -456,10 +429,9 @@ export default function BibsGenerator() {
             {/* Navigation */}
             <div className={styles.previewNav}>
               <button
+                type="button"
                 className={styles.navButton}
-                onClick={() =>
-                  setPreviewNumber((n) => Math.max(config.startNumber, n - 1))
-                }
+                onClick={() => setPreviewNumber((n) => Math.max(config.startNumber, n - 1))}
                 disabled={previewNumber <= config.startNumber}
               >
                 ← 前
@@ -468,10 +440,9 @@ export default function BibsGenerator() {
                 {formatNumber(previewNumber)} / {formatNumber(config.endNumber)}
               </span>
               <button
+                type="button"
                 className={styles.navButton}
-                onClick={() =>
-                  setPreviewNumber((n) => Math.min(config.endNumber, n + 1))
-                }
+                onClick={() => setPreviewNumber((n) => Math.min(config.endNumber, n + 1))}
                 disabled={previewNumber >= config.endNumber}
               >
                 次 →
@@ -484,6 +455,7 @@ export default function BibsGenerator() {
               <div className={styles.bibGrid}>
                 {bibNumbers.slice(0, 30).map((num) => (
                   <motion.button
+                    type="button"
                     key={num}
                     className={`${styles.gridBib} ${
                       num === previewNumber ? styles.gridBibActive : ""
@@ -502,9 +474,7 @@ export default function BibsGenerator() {
                   </motion.button>
                 ))}
                 {bibNumbers.length > 30 && (
-                  <span className={styles.moreIndicator}>
-                    +{bibNumbers.length - 30}枚
-                  </span>
+                  <span className={styles.moreIndicator}>+{bibNumbers.length - 30}枚</span>
                 )}
               </div>
             </div>
