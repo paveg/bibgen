@@ -4,8 +4,15 @@ import { NumberField } from "@base-ui-components/react/number-field";
 import { Select } from "@base-ui-components/react/select";
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useTheme } from "@/hooks/useTheme";
+import { type ThemeMode, useTheme } from "@/hooks/useTheme";
 import styles from "./BibsGenerator.module.css";
+
+// Theme mode options
+const THEME_OPTIONS = [
+  { value: "system", label: "システム", icon: "💻" },
+  { value: "light", label: "ライト", icon: "☀️" },
+  { value: "dark", label: "ダーク", icon: "🌙" },
+] as const;
 
 // Font options for bibs
 const FONT_OPTIONS = [
@@ -99,7 +106,7 @@ export default function BibsGenerator() {
   const [freeInput, setFreeInput] = useState("1, 2, 3, 5, 7, 10");
   const [userMode, setUserMode] = useState<UserMode>("participant");
   const [participantNumber, setParticipantNumber] = useState(42);
-  const { theme, toggleTheme, mounted } = useTheme();
+  const { mode, setThemeMode, mounted } = useTheme();
 
   const bibNumbers = useMemo(() => {
     // Participant mode: single number
@@ -195,14 +202,41 @@ export default function BibsGenerator() {
               <h1 className={styles.logo}>BIBGEN</h1>
             </div>
             {mounted && (
-              <button
-                type="button"
-                className={styles.themeToggle}
-                onClick={toggleTheme}
-                aria-label={theme === "dark" ? "ライトモードに切り替え" : "ダークモードに切り替え"}
-              >
-                <span className={styles.themeIcon}>{theme === "dark" ? "☀️" : "🌙"}</span>
-              </button>
+              <div className={styles.themeSelector}>
+                <Select.Root
+                  value={mode}
+                  onValueChange={(val) => val && setThemeMode(val as ThemeMode)}
+                >
+                  <Select.Trigger
+                    className={styles.themeTrigger}
+                    aria-label="テーマを選択"
+                  >
+                    <Select.Value>
+                      {THEME_OPTIONS.find((opt) => opt.value === mode)?.icon}
+                    </Select.Value>
+                    <Select.Icon className={styles.themeSelectIcon}>▼</Select.Icon>
+                  </Select.Trigger>
+                  <Select.Portal>
+                    <Select.Positioner>
+                      <Select.Popup className={styles.themePopup}>
+                        {THEME_OPTIONS.map((option) => (
+                          <Select.Item
+                            key={option.value}
+                            value={option.value}
+                            className={styles.themeOption}
+                          >
+                            <Select.ItemIndicator className={styles.themeOptionIndicator}>
+                              ✓
+                            </Select.ItemIndicator>
+                            <span className={styles.themeOptionIcon}>{option.icon}</span>
+                            <Select.ItemText>{option.label}</Select.ItemText>
+                          </Select.Item>
+                        ))}
+                      </Select.Popup>
+                    </Select.Positioner>
+                  </Select.Portal>
+                </Select.Root>
+              </div>
             )}
           </div>
           <p className={styles.tagline}>バイク用ゼッケンナンバージェネレーター</p>

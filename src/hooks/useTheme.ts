@@ -2,38 +2,55 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-type Theme = "dark" | "light";
+export type ThemeMode = "system" | "light" | "dark";
+type ResolvedTheme = "light" | "dark";
 
 const STORAGE_KEY = "bibgen-theme";
 
+function getSystemTheme(): ResolvedTheme {
+  if (typeof window === "undefined") return "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>("dark");
+  const [mode, setMode] = useState<ThemeMode>("system");
+  const [resolvedTheme, setResolvedTheme] = useState<ResolvedTheme>("dark");
   const [mounted, setMounted] = useState(false);
 
-  // Initialize theme from localStorage or system preference
+  // Initialize theme from localStorage
   useEffect(() => {
     setMounted(true);
-    const stored = localStorage.getItem(STORAGE_KEY) as Theme | null;
-    if (stored) {
-      setTheme(stored);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-      setTheme(prefersDark ? "dark" : "light");
+    const stored = localStorage.getItem(STORAGE_KEY) as ThemeMode | null;
+    if (stored && ["system", "light", "dark"].includes(stored)) {
+      setMode(stored);
     }
   }, []);
 
-  // Apply theme to document
+  // Resolve theme and listen for system changes
   useEffect(() => {
-    if (mounted) {
-      document.documentElement.setAttribute("data-theme", theme);
-      localStorage.setItem(STORAGE_KEY, theme);
-    }
-  }, [theme, mounted]);
+    if (!mounted) return;
 
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+    const updateResolvedTheme = () => {
+      const resolved = mode === "system" ? getSystemTheme() : mode;
+      setResolvedTheme(resolved);
+      document.documentElement.setAttribute("data-theme", resolved);
+    };
+
+    updateResolvedTheme();
+    localStorage.setItem(STORAGE_KEY, mode);
+
+    // Listen for system preference changes when in system mode
+    if (mode === "system") {
+      const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+      const handler = () => updateResolvedTheme();
+      mediaQuery.addEventListener("change", handler);
+      return () => mediaQuery.removeEventListener("change", handler);
+    }
+  }, [mode, mounted]);
+
+  const setThemeMode = useCallback((newMode: ThemeMode) => {
+    setMode(newMode);
   }, []);
 
-  return { theme, toggleTheme, mounted };
+  return { mode, resolvedTheme, setThemeMode, mounted };
 }
