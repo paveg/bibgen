@@ -870,8 +870,18 @@
 .footerContent {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   gap: var(--space-md);
+}
+
+.footerText {
+  margin: 0;
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
 }
 
 .footerLink {
@@ -961,5 +971,14 @@
 
   .rangeInputs {
     flex-wrap: wrap;
+  }
+
+  .footerContent {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .footerText {
+    text-align: center;
   }
 }
