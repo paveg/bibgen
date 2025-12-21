@@ -34,20 +34,11 @@ export const metadata: Metadata = {
     siteName: "BIBGEN",
     title: "BIBGEN | バイク用ゼッケンジェネレーター",
     description: "モトクロス・エンデューロ用ゼッケンを簡単に生成・印刷",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "BIBGEN - バイク用ゼッケンジェネレーター",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "BIBGEN | バイク用ゼッケンジェネレーター",
     description: "モトクロス・エンデューロ用ゼッケンを簡単に生成・印刷",
-    images: ["/og-image.png"],
     creator: "@paveg_",
   },
   robots: {
