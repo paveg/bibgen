@@ -876,23 +876,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  color: var(--off-white);
+  width: 40px;
+  height: 40px;
   background: transparent;
   border-radius: 8px;
-  opacity: 0.7;
   transition: all var(--duration-fast) ease;
 }
 
 .githubLink:hover {
-  opacity: 1;
   background: var(--charcoal-light);
   transform: scale(1.1);
 }
 
+.githubLink:hover .githubIcon {
+  fill: var(--off-white);
+}
+
 .githubLink:active {
   transform: scale(0.95);
+}
+
+.githubIcon {
+  fill: var(--silver);
+  transition: fill var(--duration-fast) ease;
 }
 
 /* Screen Reader Only */
