@@ -32,27 +32,40 @@
   gap: var(--space-sm);
 }
 
-.themeToggle {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 40px;
-  height: 40px;
+/* Shared Icon Button (Ghost) */
+.iconButton {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 40px;
+  height: 40px;
   background: transparent;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   color: var(--silver);
+  text-decoration: none;
   transition: all var(--duration-fast) ease;
 }
 
-.themeToggle:hover {
+.iconButton:hover {
   background: var(--charcoal-light);
   color: var(--off-white);
+  transform: scale(1.05);
+}
+
+.iconButton:active {
+  transform: scale(0.95);
+}
+
+.themeToggle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.themeToggle:hover {
   transform: translateY(-50%) scale(1.05);
 }
 
@@ -870,35 +883,6 @@
 .footerLink:hover {
   color: var(--accent-hover);
   text-decoration: underline;
-}
-
-.githubLink {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: transparent;
-  border-radius: 8px;
-  transition: all var(--duration-fast) ease;
-}
-
-.githubLink:hover {
-  background: var(--charcoal-light);
-  transform: scale(1.1);
-}
-
-.githubLink:hover .githubIcon {
-  fill: var(--off-white);
-}
-
-.githubLink:active {
-  transform: scale(0.95);
-}
-
-.githubIcon {
-  fill: var(--silver);
-  transition: fill var(--duration-fast) ease;
 }
 
 /* Screen Reader Only */
